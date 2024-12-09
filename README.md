@@ -1,2 +1,3 @@
-# dotfiles
+# DOTFILES
+
 Application configuration files (dotfiles).
