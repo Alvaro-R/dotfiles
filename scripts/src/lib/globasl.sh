@@ -2,8 +2,11 @@
 
 # DOTFILES PATHS
 DOTFILES_DIR="$HOME/.dotfiles"
+
+## VSCODE
 VSCODE_CONFIG_DIR="$HOME/Library/Application Support/Code/User"
 VSCODE_CONFIG_FILE="settings.json"
+VSCODE_EXTENSIONS_FILE="$HOME/.dotfiles/.config/vscode/extensions.txt"
 
 # SSH PATH VARIABLES
 export SSH_PATH="$HOME/.ssh"

@@ -38,6 +38,13 @@ commands:
     help: Extension ID to be installed.
 # <<<<<<<<<< VSCODE EXTESION INSTALLATION <<<<<<<<<<
 
+# >>>>>>>>>> UPDATE VSCODE EXTENSIONS >>>>>>>>>
+- name: update-vscode-extensions-list
+  alias: u-vscode-ext-list
+  help: Install extesion and add it to from .dotfiles/.config/vscode/extesions.txt.
+
+# <<<<<<<<<< UPDATE VSCODE EXTENSIONS <<<<<<<<<<
+
 #   args:
 #   - name: extesions
 #     required: true

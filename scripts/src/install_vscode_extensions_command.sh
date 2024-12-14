@@ -1,21 +1,33 @@
 #!/bin/bash
 
-# Crear el directorio de configuración de VSCode si no existe
-mkdir -p "$VSCODE_CONFIG_DIR"
+update=${args[--update]}
 
-# Eliminar el archivo de configuración existente si existe
-if [ -f "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE" ]; then
-  echo "Eliminando el archivo existente $VSCODE_CONFIG_FILE"
-  rm "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
+# Verificar si el archivo de extensiones existe
+if [ ! -f "$VSCODE_EXTENSIONS_FILE" ]; then
+  warning "El archivo $VSCODE_EXTENSIONS_FILE no existe."
+  exit 1
 fi
 
-# Crear el symlink
-echo "Creando symlink para $VSCODE_CONFIG_FILE en $VSCODE_CONFIG_DIR"
-ln -s "$DOTFILES_DIR/vscode/$VSCODE_CONFIG_FILE" "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
+# Leer el archivo y instalar las extensiones
+info "Reading extensions file at $VSCODE_EXTENSIONS_FILE..."
+while IFS= read -r extension; do
+  # Verificar que la línea no esté vacía y no comience con #
+  if [ -n "$extension" ] && [[ ! "$extension" =~ ^# ]]; then
+    section
 
-# Confirmar el symlink
-if [ -L "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE" ]; then
-  echo "Symlink creado exitosamente."
-else
-  echo "Hubo un problema al crear el symlink."
-fi
+    if [[ -n "$update" ]]; then
+      info "Installing extension: $extension"
+      code --install-extension "$extension" --force
+
+    else
+
+      info "Installing extension: $extension"
+      warning "Probando"
+      code --install-extension "$extension"
+    fi
+    
+  fi
+done < "$VSCODE_EXTENSIONS_FILE"
+section
+
+success "Extesions installation completed successfully!."
