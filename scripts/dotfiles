@@ -225,15 +225,99 @@ inspect_args() {
   fi
 }
 
+# :command.user_lib
+# src/lib/colors.sh
+print_in_color() {
+  local color="$1"
+  shift
+  if [[ -z ${NO_COLOR+x} ]]; then
+    printf "$color%b\e[0m\n" "$*"
+  else
+    printf "%b\n" "$*"
+  fi
+}
+
+red() { print_in_color "\e[31m" "$*"; }
+green() { print_in_color "\e[32m" "$*"; }
+yellow() { print_in_color "\e[33m" "$*"; }
+blue() { print_in_color "\e[34m" "$*"; }
+magenta() { print_in_color "\e[35m" "$*"; }
+cyan() { print_in_color "\e[36m" "$*"; }
+black() { print_in_color "\e[30m" "$*"; }
+white() { print_in_color "\e[37m" "$*"; }
+
+bold() { print_in_color "\e[1m" "$*"; }
+underlined() { print_in_color "\e[4m" "$*"; }
+
+red_bold() { print_in_color "\e[1;31m" "$*"; }
+green_bold() { print_in_color "\e[1;32m" "$*"; }
+yellow_bold() { print_in_color "\e[1;33m" "$*"; }
+blue_bold() { print_in_color "\e[1;34m" "$*"; }
+magenta_bold() { print_in_color "\e[1;35m" "$*"; }
+cyan_bold() { print_in_color "\e[1;36m" "$*"; }
+black_bold() { print_in_color "\e[1;30m" "$*"; }
+white_bold() { print_in_color "\e[1;37m" "$*"; }
+
+red_underlined() { print_in_color "\e[4;31m" "$*"; }
+green_underlined() { print_in_color "\e[4;32m" "$*"; }
+yellow_underlined() { print_in_color "\e[4;33m" "$*"; }
+blue_underlined() { print_in_color "\e[4;34m" "$*"; }
+magenta_underlined() { print_in_color "\e[4;35m" "$*"; }
+cyan_underlined() { print_in_color "\e[4;36m" "$*"; }
+black_underlined() { print_in_color "\e[4;30m" "$*"; }
+white_underlined() { print_in_color "\e[4;37m" "$*"; }
+
+# src/lib/echo_strings.sh
+#!/bin/bash
+
+# Define sections limits
+symbol="─"
+times=50
+section_limit=""
+for ((i=0; i<times; i++)); do
+    section_limit+="$symbol"
+done
+section_limit="$(white_bold "$section_limit")"
+
+section() {
+    echo "$section_limit"
+}
+
+# Info
+info() {
+    echo "$(cyan_bold "$1")"
+}
+
+# Header
+header() {
+    echo "$(white_bold "$1")"
+}
+
+# Success
+success() {
+    echo "$(green_bold "✅ [Success] - $1")"
+}
+
+# Warning
+warning() {
+    echo "$(yellow_bold "⚠️ [Warning] - $1")"
+}
+
+# Error
+error() {
+    echo "$(red_bold "❌ [Error] - $1")"
+}
+
 # :command.command_functions
 # :command.function
 dotfiles_stow_dotfiles_command() {
 
   # src/stow_dotfiles_command.sh
-  echo "# this file is located in 'src/stow_dotfiles_command.sh'"
-  echo "# code for 'dotfiles stow-dotfiles' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  section
+  info "Cretaing symlinks for .dotfiles at home directory..."
+  cd ~/.dotfiles
+  stow .
+  success "Symlinks to .dotfiles created at home directory"
 
 }
 
@@ -241,10 +325,32 @@ dotfiles_stow_dotfiles_command() {
 dotfiles_symlink_vscode_command() {
 
   # src/symlink_vscode_command.sh
-  echo "# this file is located in 'src/symlink_vscode_command.sh'"
-  echo "# code for 'dotfiles symlink-vscode' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  #!/bin/bash
+
+  # Ruta de la configuración de VSCode
+  DOTFILES_DIR="$HOME/.dotfiles"
+  VSCODE_CONFIG_DIR="$HOME/Library/Application Support/Code/User"
+  VSCODE_CONFIG_FILE="settings.json"
+
+  # Crear el directorio de configuración de VSCode si no existe
+  mkdir -p "$VSCODE_CONFIG_DIR"
+
+  # Eliminar el archivo de configuración existente si existe
+  if [ -f "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE" ]; then
+    echo "Eliminando el archivo existente $VSCODE_CONFIG_FILE"
+    rm "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
+  fi
+
+  # Crear el symlink
+  echo "Creando symlink para $VSCODE_CONFIG_FILE en $VSCODE_CONFIG_DIR"
+  ln -s "$DOTFILES_DIR/vscode/$VSCODE_CONFIG_FILE" "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
+
+  # Confirmar el symlink
+  if [ -L "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE" ]; then
+    echo "Symlink creado exitosamente."
+  else
+    echo "Hubo un problema al crear el symlink."
+  fi
 
 }
 
@@ -252,10 +358,32 @@ dotfiles_symlink_vscode_command() {
 dotfiles_install_vscode_extensions_command() {
 
   # src/install_vscode_extensions_command.sh
-  echo "# this file is located in 'src/install_vscode_extensions_command.sh'"
-  echo "# code for 'dotfiles install-vscode-extensions' goes here"
-  echo "# you can edit it freely and regenerate (it will not be overwritten)"
-  inspect_args
+  #!/bin/bash
+
+  # Ruta de la configuración de VSCode
+  DOTFILES_DIR="$HOME/.dotfiles"
+  VSCODE_CONFIG_DIR="$HOME/Library/Application Support/Code/User"
+  VSCODE_CONFIG_FILE="settings.json"
+
+  # Crear el directorio de configuración de VSCode si no existe
+  mkdir -p "$VSCODE_CONFIG_DIR"
+
+  # Eliminar el archivo de configuración existente si existe
+  if [ -f "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE" ]; then
+    echo "Eliminando el archivo existente $VSCODE_CONFIG_FILE"
+    rm "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
+  fi
+
+  # Crear el symlink
+  echo "Creando symlink para $VSCODE_CONFIG_FILE en $VSCODE_CONFIG_DIR"
+  ln -s "$DOTFILES_DIR/vscode/$VSCODE_CONFIG_FILE" "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
+
+  # Confirmar el symlink
+  if [ -L "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE" ]; then
+    echo "Symlink creado exitosamente."
+  else
+    echo "Hubo un problema al crear el symlink."
+  fi
 
 }
 
