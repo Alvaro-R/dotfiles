@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Ruta de la configuración de VSCode
-DOTFILES_DIR="$HOME/.dotfiles"
-VSCODE_CONFIG_DIR="$HOME/Library/Application Support/Code/User"
-VSCODE_CONFIG_FILE="settings.json"
-
 # Crear el directorio de configuración de VSCode si no existe
 mkdir -p "$VSCODE_CONFIG_DIR"
 

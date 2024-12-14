@@ -1,27 +1,25 @@
 #!/bin/bash
 
-# Ruta de la configuración de VSCode
-DOTFILES_DIR="$HOME/.dotfiles"
-VSCODE_CONFIG_DIR="$HOME/Library/Application Support/Code/User"
-VSCODE_CONFIG_FILE="settings.json"
-
-# Crear el directorio de configuración de VSCode si no existe
+# Ensure the target directory exists
 mkdir -p "$VSCODE_CONFIG_DIR"
 
-# Eliminar el archivo de configuración existente si existe
+# Check if the file already exists
+section
+info "Checking whether VSCode settings.json alredy exists at $VSCODE_CONFIG_DIR"
 if [ -f "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE" ]; then
-  echo "Eliminando el archivo existente $VSCODE_CONFIG_FILE"
+  info "Removing existing file $VSCODE_CONFIG_FILE"
   rm "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
 fi
 
-# Crear el symlink
-echo "Creando symlink para $VSCODE_CONFIG_FILE en $VSCODE_CONFIG_DIR"
-ln -s "$DOTFILES_DIR/vscode/$VSCODE_CONFIG_FILE" "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
+# Create symlink, but make sure the file doesn't already exist
+info "Creating symlink for $VSCODE_CONFIG_FILE at $VSCODE_CONFIG_DIR"
+ln -sf "$DOTFILES_DIR/vscode/$VSCODE_CONFIG_FILE" "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE"
 
-# Confirmar el symlink
+# Verify if the symlink was successfully created
 if [ -L "$VSCODE_CONFIG_DIR/$VSCODE_CONFIG_FILE" ]; then
-  echo "Symlink creado exitosamente."
+  success "Symlink succesfully created!"
 else
-  echo "Hubo un problema al crear el symlink."
+  error "There was a problem creating the symlink..."
 fi
+section
 

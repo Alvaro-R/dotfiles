@@ -1,5 +1,6 @@
 section
 info "Cretaing symlinks for .dotfiles at home directory..."
-cd ~/.dotfiles
+cd $DOTFILES_DIR
 stow .
 success "Symlinks to .dotfiles created at home directory"
+section
