@@ -26,7 +26,7 @@
           "nixos": { // This name "nixos" could be arbitrary.
             // The expression to eval, interpret it as option declarations.
             "expr": "(builtins.getFlake \"~/.config/nix/nix-darwin\").nixosConfigurations.Ecthelion .options"
-          },
+          }
           
           // This options for home-manager works only for standalone installation.
           // If home-manager is installed as a darwin module, cannot be configured: https://github.com/nix-community/nixd/issues/608#issuecomment-2434878142
@@ -34,7 +34,7 @@
           // "home-manager": {
           //   "expr": "(builtins.getFlake \"~/.config/nix/nix-darwin\").homeConfigurations.Ecthelion.options"
           // }
-        },
+        }
         // Control the diagnostic system
         // "diagnostic": {
         //   "suppress": [
