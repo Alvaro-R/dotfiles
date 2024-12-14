@@ -26,4 +26,5 @@ if ! grep -q "^$extension_id$" "$VSCODE_EXTENSIONS_FILE"; then
 else
     warning "$extension_id was already in $VSCODE_EXTENSIONS_FILE!"
 fi
+code --list-extensions > "$VSCODE_EXTENSIONS_FILE"
 section

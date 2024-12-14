@@ -41,9 +41,27 @@ commands:
 # >>>>>>>>>> UPDATE VSCODE EXTENSIONS >>>>>>>>>
 - name: update-vscode-extensions-list
   alias: u-vscode-ext-list
-  help: Install extesion and add it to from .dotfiles/.config/vscode/extesions.txt.
+  help: Update extension list at .dotfiles/.config/vscode/extesions.txt from already installed extensions.
 
 # <<<<<<<<<< UPDATE VSCODE EXTENSIONS <<<<<<<<<<
+
+# >>>>>>>>>> UNINSTALL VSCODE EXTENSION >>>>>>>>>
+- name: uninstall-vscode-extension
+  alias: un-vscode-ext
+  help: Uninstall extesion and remove it from .dotfiles/.config/vscode/extesions.txt.
+
+  args:
+  - name: extension-id
+    required: true
+    help: Extension ID to be uninstalled. 
+# <<<<<<<<<< UNINSTALL VSCODE EXTENSIONS <<<<<<<<<<
+
+# >>>>>>>>>> SYNC VSCODE EXTENSIONS >>>>>>>>>
+- name: sync-vscode-extensions
+  alias: sync-vscode-exts
+  help: Syncronize VSCode according to extensions at .dotfiles/.config/vscode/extesions.txt.
+
+# <<<<<<<<<< SYNC VSCODE EXTENSIONS <<<<<<<<<<
 
 #   args:
 #   - name: extesions

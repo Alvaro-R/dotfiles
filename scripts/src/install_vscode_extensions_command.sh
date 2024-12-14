@@ -28,6 +28,7 @@ while IFS= read -r extension; do
     
   fi
 done < "$VSCODE_EXTENSIONS_FILE"
+code --list-extensions > "$VSCODE_EXTENSIONS_FILE"
 section
 
 success "Extesions installation completed successfully!."

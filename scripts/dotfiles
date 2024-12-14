@@ -30,7 +30,9 @@ dotfiles_usage() {
   printf "  %s   Create symlink for VSCode settings.json.\n" "symlink-vscode               "
   printf "  %s   Install VSCode extensions from .dotfiles/.config/vscode/extesions.txt.\n" "install-vscode-extensions    "
   printf "  %s   Install extesion and add it to from .dotfiles/.config/vscode/extesions.txt.\n" "install-vscode-extension     "
-  printf "  %s   Install extesion and add it to from .dotfiles/.config/vscode/extesions.txt.\n" "update-vscode-extensions-list"
+  printf "  %s   Update extension list at .dotfiles/.config/vscode/extesions.txt from already installed extensions.\n" "update-vscode-extensions-list"
+  printf "  %s   Uninstall extesion and remove it from .dotfiles/.config/vscode/extesions.txt.\n" "uninstall-vscode-extension   "
+  printf "  %s   Syncronize VSCode according to extensions at .dotfiles/.config/vscode/extesions.txt.\n" "sync-vscode-extensions       "
   echo
 
   # :command.long_usage
@@ -156,13 +158,67 @@ dotfiles_install_vscode_extension_usage() {
 
 # :command.usage
 dotfiles_update_vscode_extensions_list_usage() {
-  printf "dotfiles update-vscode-extensions-list - Install extesion and add it to from .dotfiles/.config/vscode/extesions.txt.\n\n"
+  printf "dotfiles update-vscode-extensions-list - Update extension list at .dotfiles/.config/vscode/extesions.txt from already installed extensions.\n\n"
   printf "Alias: u-vscode-ext-list\n"
   echo
 
   printf "%s\n" "Usage:"
   printf "  dotfiles update-vscode-extensions-list\n"
   printf "  dotfiles update-vscode-extensions-list --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n "$long_usage" ]]; then
+    printf "%s\n" "Options:"
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+  fi
+}
+
+# :command.usage
+dotfiles_uninstall_vscode_extension_usage() {
+  printf "dotfiles uninstall-vscode-extension - Uninstall extesion and remove it from .dotfiles/.config/vscode/extesions.txt.\n\n"
+  printf "Alias: un-vscode-ext\n"
+  echo
+
+  printf "%s\n" "Usage:"
+  printf "  dotfiles uninstall-vscode-extension EXTENSION-ID\n"
+  printf "  dotfiles uninstall-vscode-extension --help | -h\n"
+  echo
+
+  # :command.long_usage
+  if [[ -n "$long_usage" ]]; then
+    printf "%s\n" "Options:"
+
+    # :command.usage_fixed_flags
+    printf "  %s\n" "--help, -h"
+    printf "    Show this help\n"
+    echo
+
+    # :command.usage_args
+    printf "%s\n" "Arguments:"
+
+    # :argument.usage
+    printf "  %s\n" "EXTENSION-ID"
+    printf "    Extension ID to be uninstalled.\n"
+    echo
+
+  fi
+}
+
+# :command.usage
+dotfiles_sync_vscode_extensions_usage() {
+  printf "dotfiles sync-vscode-extensions - Syncronize VSCode according to extensions at .dotfiles/.config/vscode/extesions.txt.\n\n"
+  printf "Alias: sync-vscode-exts\n"
+  echo
+
+  printf "%s\n" "Usage:"
+  printf "  dotfiles sync-vscode-extensions\n"
+  printf "  dotfiles sync-vscode-extensions --help | -h\n"
   echo
 
   # :command.long_usage
@@ -506,6 +562,7 @@ dotfiles_install_vscode_extensions_command() {
 
     fi
   done < "$VSCODE_EXTENSIONS_FILE"
+  code --list-extensions > "$VSCODE_EXTENSIONS_FILE"
   section
 
   success "Extesions installation completed successfully!."
@@ -544,6 +601,7 @@ dotfiles_install_vscode_extension_command() {
   else
       warning "$extension_id was already in $VSCODE_EXTENSIONS_FILE!"
   fi
+  code --list-extensions > "$VSCODE_EXTENSIONS_FILE"
   section
 
 }
@@ -587,6 +645,82 @@ dotfiles_update_vscode_extensions_list_command() {
     error "There was an error updating extensions list."
     exit 1
   fi
+
+}
+
+# :command.function
+dotfiles_uninstall_vscode_extension_command() {
+
+  # src/uninstall_vscode_extension_command.sh
+  #!/bin/bash
+
+  # This command uninstalls a VSCode extension and removes it from the extensions.txt file.
+
+  extension_id=${args[extension-id]}
+
+  # Check if the extension is installed
+  if ! code --list-extensions 2>/dev/null | grep -q "$extension_id"; then
+    warning "Extension '$extension_id' is not installed."
+    exit 1
+  fi
+
+  # Uninstall the extension
+  info "Uninstalling extension '$extension_id'..."
+  code --uninstall-extension "$extension_id"
+
+  # Check if the uninstall was successful
+  if [ $? -eq 0 ]; then
+    success "Extension '$extension_id' successfully uninstalled!"
+  else
+    error "Error uninstalling extension '$extension_id'."
+    exit 1
+  fi
+
+  # Remove the extension from extensions.txt
+  if grep -q "^$extension_id$" "$VSCODE_EXTENSIONS_FILE"; then
+    info "Removing '$extension_id' from $VSCODE_EXTENSIONS_FILE..."
+    sed -i.bak "/^$extension_id$/d" "$VSCODE_EXTENSIONS_FILE"
+    code --list-extensions > "$VSCODE_EXTENSIONS_FILE"
+    success "Extension '$extension_id' removed from $VSCODE_EXTENSIONS_FILE."
+  else
+    warning "Extension '$extension_id' was not found in $VSCODE_EXTENSIONS_FILE."
+  fi
+
+}
+
+# :command.function
+dotfiles_sync_vscode_extensions_command() {
+
+  # src/sync_vscode_extensions_command.sh
+  #!/bin/bash
+
+  if [ ! -f "$VSCODE_EXTENSIONS_FILE" ]; then
+    error "Error: File $VSCODE_EXTENSIONS_FILE does not exits."
+    exit 1
+  fi
+
+  installed_extensions=$(code --list-extensions)
+
+  extensions_to_install=$(cat "$VSCODE_EXTENSIONS_FILE")
+
+  section
+  for extension in $extensions_to_install; do
+    if ! echo "$installed_extensions" | grep -q "^$extension$"; then
+      info "Installing extension: $extension"
+      code --install-extension "$extension"
+    fi
+  done
+  section
+
+  for extension in $installed_extensions; do
+    if ! echo "$extensions_to_install" | grep -q "^$extension$"; then
+      info "Uninstalling extension: $extension"
+      code --uninstall-extension "$extension"
+    fi
+  done
+  section
+
+  success "Synchronization completed successfully!"
 
 }
 
@@ -652,6 +786,20 @@ parse_requirements() {
       action="update-vscode-extensions-list"
       shift
       dotfiles_update_vscode_extensions_list_parse_requirements "$@"
+      shift $#
+      ;;
+
+    uninstall-vscode-extension | un-vscode-ext)
+      action="uninstall-vscode-extension"
+      shift
+      dotfiles_uninstall_vscode_extension_parse_requirements "$@"
+      shift $#
+      ;;
+
+    sync-vscode-extensions | sync-vscode-exts)
+      action="sync-vscode-extensions"
+      shift
+      dotfiles_sync_vscode_extensions_parse_requirements "$@"
       shift $#
       ;;
 
@@ -935,6 +1083,108 @@ dotfiles_update_vscode_extensions_list_parse_requirements() {
 
 }
 
+# :command.parse_requirements
+dotfiles_uninstall_vscode_extension_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      --help | -h)
+        long_usage=yes
+        dotfiles_uninstall_vscode_extension_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="uninstall-vscode-extension"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        # :argument.case
+        if [[ -z ${args['extension-id']+x} ]]; then
+          args['extension-id']=$1
+          shift
+        else
+          printf "invalid argument: %s\n" "$key" >&2
+          exit 1
+        fi
+
+        ;;
+
+    esac
+  done
+  # :command.required_args_filter
+  if [[ -z ${args['extension-id']+x} ]]; then
+    printf "missing required argument: EXTENSION-ID\nusage: dotfiles uninstall-vscode-extension EXTENSION-ID\n" >&2
+
+    exit 1
+  fi
+
+}
+
+# :command.parse_requirements
+dotfiles_sync_vscode_extensions_parse_requirements() {
+  # :command.fixed_flags_filter
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+      --help | -h)
+        long_usage=yes
+        dotfiles_sync_vscode_extensions_usage
+        exit
+        ;;
+
+      *)
+        break
+        ;;
+
+    esac
+  done
+
+  # :command.command_filter
+  action="sync-vscode-extensions"
+
+  # :command.parse_requirements_while
+  while [[ $# -gt 0 ]]; do
+    key="$1"
+    case "$key" in
+
+      -?*)
+        printf "invalid option: %s\n" "$key" >&2
+        exit 1
+        ;;
+
+      *)
+        # :command.parse_requirements_case
+        # :command.parse_requirements_case_simple
+        printf "invalid argument: %s\n" "$key" >&2
+        exit 1
+
+        ;;
+
+    esac
+  done
+
+}
+
 # :command.initialize
 initialize() {
   version="0.1.0"
@@ -959,6 +1209,8 @@ run() {
     "install-vscode-extensions") dotfiles_install_vscode_extensions_command ;;
     "install-vscode-extension") dotfiles_install_vscode_extension_command ;;
     "update-vscode-extensions-list") dotfiles_update_vscode_extensions_list_command ;;
+    "uninstall-vscode-extension") dotfiles_uninstall_vscode_extension_command ;;
+    "sync-vscode-extensions") dotfiles_sync_vscode_extensions_command ;;
   esac
 }
 
