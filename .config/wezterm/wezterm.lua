@@ -7,7 +7,7 @@ config ={
     enable_tab_bar = true,
     color_scheme = 'Catppuccin Macchiato (Gogh)',
     font = wezterm.font('JetBrains Mono', { weight = 'Bold', italic = false }),
-    font_size = 18,
+    font_size = 14,
     background = {
         {
             source = {

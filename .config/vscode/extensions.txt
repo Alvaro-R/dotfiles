@@ -1,5 +1,6 @@
 jnoortheen.nix-ide
 kamikillerto.vscode-colorize
+mads-hartmann.bash-ide-vscode
 ms-python.debugpy
 ms-python.python
 ms-python.vscode-pylance
