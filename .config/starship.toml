@@ -1,13 +1,179 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
+format = """
+[](fg:base)\
+$os\
+$hostname\
+[ ](bg:surface1 fg:base)\
+$conda\
+$username\
+[](bg:overlay0 fg:surface1)\
+$directory\
+[](fg:overlay0 bg:blue)\
+$git_branch\
+$git_status\
+[](fg:blue bg:lavender)\
+$status\
+[](fg:lavender)\
+$fill\
+[](fg:lavender)\
+$python\
+$cmd_duration\
+$time\
+"""
+# [ ](fg:color_bg1)\
 # Inserts a blank line between shell prompts
 add_newline = false
+palette = 'catppuccin_mocha'
+
+
+[hostname]
+ssh_only = false
+format = '[$ssh_symbol](fg:text bg:base)(fg:base)[$hostname ](fg:text bg:base)'
+trim_at = '.companyname.com'
+disabled = false
+aliases = { "Ecthelion" = " 󰓥" }
+ssh_symbol = "  "
+
+[username]
+show_always = true
+style_user = "bg:surface1 fg:text"
+style_root = "bg:peach fg:text"
+format = '[$user ]($style)'
+
+
+[directory]
+style = "fg:text bg:overlay0"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+truncate_to_repo = true
+read_only = ""
+read_only_style = "red"
+home_symbol = " "
+
+
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[time]
+format = "[ $time ](bg:lavender fg:black)"
+disabled = false
+
+[cmd_duration]
+disabled = false
+format = "[ $duration ](bg:red fg:black)"
+min_time = 1
+min_time_to_notify = 1
+show_milliseconds = true
+show_notifications = false
+
+[python]
+symbol = " "
+style = "fg:black bg:blue"
+format = "[ $symbol$version $virtualenv]($style)"
+version_format = "${raw}"
+
+[conda]
+disabled = false
+format = "via [$symbol$environment](bg:blue) "
+ignore_base = false
+
+# OS Options
+[os]
+disabled = false
+style = "bg:base fg:text"
+format = '[$symbol ]($style)'
+[os.symbols]
+Windows = "󰍲"
+Ubuntu = "󰕈"
+SUSE = ""
+Raspbian = "󰐿"
+Mint = "󰣭"
+Macos = "󰀵"
+Manjaro = ""
+Linux = "󰌽"
+Gentoo = "󰣨"
+Fedora = "󰣛"
+Alpine = ""
+Amazon = ""
+Android = ""
+Arch = "󰣇"
+Artix = "󰣇"
+EndeavourOS = ""
+CentOS = ""
+Debian = "󰣚"
+Redhat = "󱄛"
+RedHatEnterprise = "󱄛"
+Pop = ""
+
+[status]
+style = 'bg:lavender fg:lavender'
+symbol = ''
+success_symbol = '[](fg:bold green bg:lavender)'
+not_found_symbol = "[](fg:bold red bg:lavender)"
+not_executable_symbol = "[x](fg:bold red bg:lavender)"
+format = '[ $symbol ]($style)'
+map_symbol = true
+disabled = false
+
+[fill]
+symbol = " "
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'
-success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+disabled = false
+vimcmd_replace_one_symbol = "[❮](bold purple)"
+vimcmd_replace_symbol = "[❮](bold purple)"
+vimcmd_symbol = "[❮](bold green)"
+vimcmd_visual_symbol = "[❮](bold yellow)"
 
 # Disable the package module, hiding it from the prompt completely
 [package]
 disabled = true
+
+[git_branch]
+symbol = ""
+style = "bg:blue"
+format = '[[ $symbol $branch ](fg:text bg:blue)]($style)'
+
+[git_status]
+style = "bg:blue"
+format = '[ [($all_status$ahead_behind )](fg:text bg:blue)]($style)'
+
+[palettes.catppuccin_mocha]
+rosewater = "#f5e0dc"
+flamingo = "#f2cdcd"
+pink = "#f5c2e7"
+mauve = "#cba6f7"
+red = "#f38ba8"
+maroon = "#eba0ac"
+peach = "#fab387"
+yellow = "#f9e2af"
+green = "#a6e3a1"
+teal = "#94e2d5"
+sky = "#89dceb"
+sapphire = "#74c7ec"
+blue = "#89b4fa"
+lavender = "#b4befe"
+text = "#cdd6f4"
+subtext1 = "#bac2de"
+subtext0 = "#a6adc8"
+overlay2 = "#9399b2"
+overlay1 = "#7f849c"
+overlay0 = "#6c7086"
+surface2 = "#585b70"
+surface1 = "#45475a"
+surface0 = "#313244"
+base = "#1e1e2e"
+mantle = "#181825"
+crust = "#11111b"
+
