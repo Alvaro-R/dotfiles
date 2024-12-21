@@ -95,7 +95,8 @@ config ={
             mods = "CMD",
             action = wezterm.action.SendKey({ mods = "CTRL", key = "u" })
         },
-    }
+    },
+
 }
 
 return config
