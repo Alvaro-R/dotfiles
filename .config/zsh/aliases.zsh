@@ -1,4 +1,7 @@
 
+alias ls='lsd -lah'
+alias cd='z'
+
 # Dotfiles command aliases
 alias dotfiles='dotfiles'  # Esto asegura que 'dotfiles' se ejecute de manera global
 alias link-dotfiles='dotfiles stow-dotfiles'

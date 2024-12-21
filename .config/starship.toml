@@ -6,7 +6,6 @@ format = """
 $os\
 $hostname\
 [ ](bg:surface1 fg:base)\
-$conda\
 $username\
 [](bg:overlay0 fg:surface1)\
 $directory\
@@ -19,6 +18,7 @@ $status\
 $fill\
 [](fg:lavender)\
 $python\
+$conda\
 $cmd_duration\
 $time\
 """
@@ -77,13 +77,13 @@ show_notifications = false
 [python]
 symbol = " "
 style = "fg:black bg:blue"
-format = "[ $symbol$version $virtualenv]($style)"
+format = "[ $symbol$version $conda$virtualenv]($style)"
 version_format = "${raw}"
 
 [conda]
 disabled = false
 format = "via [$symbol$environment](bg:blue) "
-ignore_base = false
+ignore_base = true
 
 # OS Options
 [os]
