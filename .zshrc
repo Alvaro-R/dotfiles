@@ -7,11 +7,6 @@ export PATH="$HOME/bin:$PATH"
 # STARSHIP PROMPT
 eval "$(starship init zsh)"
 
-# Activar las funciones de autocompletado y prompts
-autoload -U compinit promptinit
-compinit
-promptinit
-
 # ZSH modules path
 ZSH_MODULES_PATH='/Users/alvaroroman/.dotfiles/.config/zsh'
 
@@ -34,3 +29,15 @@ bindkey '^[[B' history-search-forward
 source <(fzf --zsh)
 # Set up zoxide
 eval "$(zoxide init zsh)"
+# Homebrew
+# eval "$(brew shellenv)"
+
+# ZSH PLUGINS
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fpath=(/opt/homebrew/share/zsh-completions/src $fpath)
+
+# Activar las funciones de autocompletado y prompts
+autoload -Uz compinit promptinit
+compinit
+promptinit

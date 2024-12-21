@@ -2,7 +2,7 @@
   "$schema": "vscode://schemas/settings/user",
   "editor.fontFamily": "'JetBrainsMono Nerd Font Mono', 'FiraCode Nerd Font Mono', monospace",
   "editor.fontSize": 14.5,
-  "terminal.integrated.fontSize": 16,
+  "terminal.integrated.fontSize": 12,
   "terminal.integrated.fontFamily": "'JetBrainsMono Nerd Font Mono', 'FiraCode Nerd Font Mono', monospace",
   "terminal.integrated.fontWeightBold": "bold",
   // >>>>>>>>>> NIX CONFIGURATION >>>>>>>>>>

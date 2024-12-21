@@ -13,15 +13,21 @@ $directory\
 $git_branch\
 $git_status\
 [](fg:blue bg:lavender)\
-$status\
-[](fg:lavender)\
-$fill\
+[](fg:lavender) \
+"""
+right_format = """
 [](fg:lavender)\
+$status\
+[](bg:lavender fg:blue)\
 $python\
 $conda\
+[](bg:blue fg:peach)\
 $cmd_duration\
+[](bg:peach fg:lavender)\
 $time\
 """
+
+
 # [ ](fg:color_bg1)\
 # Inserts a blank line between shell prompts
 add_newline = false
@@ -41,12 +47,13 @@ show_always = true
 style_user = "bg:surface1 fg:text"
 style_root = "bg:peach fg:text"
 format = '[$user ]($style)'
+aliases = { alvaroroman = ""}
 
 
 [directory]
 style = "fg:text bg:overlay0"
 format = "[ $path ]($style)"
-truncation_length = 3
+truncation_length = 2
 truncation_symbol = "…/"
 truncate_to_repo = true
 read_only = ""
@@ -68,7 +75,7 @@ disabled = false
 
 [cmd_duration]
 disabled = false
-format = "[ $duration ](bg:red fg:black)"
+format = "[ $duration ](bg:peach fg:black)"
 min_time = 1
 min_time_to_notify = 1
 show_milliseconds = true
@@ -77,12 +84,12 @@ show_notifications = false
 [python]
 symbol = " "
 style = "fg:black bg:blue"
-format = "[ $symbol$version $conda$virtualenv]($style)"
+format = "[${symbol}${pyenv_prefix}(\\($virtualenv\\))]($style)"
 version_format = "${raw}"
 
 [conda]
 disabled = false
-format = "via [$symbol$environment](bg:blue) "
+format = "[\\(󰯳 $environment\\)](bg:blue fg:black)"
 ignore_base = true
 
 # OS Options
@@ -147,7 +154,7 @@ format = '[[ $symbol $branch ](fg:text bg:blue)]($style)'
 
 [git_status]
 style = "bg:blue"
-format = '[ [($all_status$ahead_behind )](fg:text bg:blue)]($style)'
+format = '[[($all_status$ahead_behind )](fg:text bg:blue)]($style)'
 
 [palettes.catppuccin_mocha]
 rosewater = "#f5e0dc"
