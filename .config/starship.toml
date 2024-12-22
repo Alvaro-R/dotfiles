@@ -13,10 +13,13 @@ $directory\
 $git_branch\
 $git_status\
 [](fg:blue bg:lavender)\
-[](fg:lavender) \
+[ ](fg:lavender)\
 """
+# [](fg:lavender) \
+# [](fg:lavender)\
+
 right_format = """
-[](fg:lavender)\
+[](fg:lavender)\
 $status\
 [](bg:lavender fg:blue)\
 $python\
@@ -25,6 +28,7 @@ $conda\
 $cmd_duration\
 [](bg:peach fg:lavender)\
 $time\
+[](fg:lavender)\
 """
 
 
@@ -70,7 +74,7 @@ home_symbol = " "
 "Developer" = "󰲋 "
 
 [time]
-format = "[ $time ](bg:lavender fg:black)"
+format = "[ $time](bg:lavender fg:black)"
 disabled = false
 
 [cmd_duration]
