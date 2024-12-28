@@ -6,3 +6,4 @@ ms-python.python
 ms-python.vscode-pylance
 sumneko.lua
 tamasfe.even-better-toml
+virgilsisoe.hammerspoon
