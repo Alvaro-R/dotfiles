@@ -1,9 +1,13 @@
+cweijan.dbclient-jdbc
+cweijan.vscode-postgresql-client2
 jnoortheen.nix-ide
 kamikillerto.vscode-colorize
 mads-hartmann.bash-ide-vscode
+ms-azuretools.vscode-docker
 ms-python.debugpy
 ms-python.python
 ms-python.vscode-pylance
+ms-vscode-remote.remote-containers
 sumneko.lua
 tamasfe.even-better-toml
 virgilsisoe.hammerspoon
