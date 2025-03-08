@@ -58,5 +58,6 @@
     "**/*.less",
     "**/*.styl"
   ],
-  "database-client.autoSync": true
+  "database-client.autoSync": true,
+  "workbench.iconTheme": "vscode-icons"
 }
