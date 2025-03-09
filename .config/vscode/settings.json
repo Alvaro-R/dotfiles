@@ -59,5 +59,9 @@
     "**/*.styl"
   ],
   "database-client.autoSync": true,
-  "workbench.iconTheme": "vscode-icons"
+  "workbench.iconTheme": "vscode-icons",
+  "github.copilot.enable": {
+    "*": false,
+    "quarto": false
+  }
 }

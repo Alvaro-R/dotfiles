@@ -67,3 +67,13 @@ if [ -f "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/mamba.sh" ]; then
     . "/opt/homebrew/Caskroom/miniforge/base/etc/profile.d/mamba.sh"
 fi
 # <<< conda initialize <<<
+
+# >>> conda configuration >>>
+
+# Disable autoactivate base environment
+conda config --set auto_activate_base false
+
+# Disable conda prompt
+conda config --set changeps1 False
+
+# <<< conda initialize <<<
