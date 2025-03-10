@@ -76,4 +76,7 @@ conda config --set auto_activate_base false
 # Disable conda prompt
 conda config --set changeps1 False
 
+# Set channel_priority to strict
+conda config --set channel_priority strict
+
 # <<< conda initialize <<<
