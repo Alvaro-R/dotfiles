@@ -61,7 +61,13 @@
   "database-client.autoSync": true,
   "workbench.iconTheme": "vscode-icons",
   "github.copilot.enable": {
-    "*": false,
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
     "quarto": false
-  }
+  },
+  "terminal.integrated.inheritEnv": false,
+  "[snakemake]": {},
+  "github.copilot.nextEditSuggestions.enabled": false
 }
